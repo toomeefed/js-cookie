@@ -24,6 +24,12 @@
             "browser_version": "latest",
             "os": "OS X",
             "os_version": "High Sierra"
+        },
+        {
+            "device": "Samsung Galaxy Note 9",
+            "real_mobile": "true",
+            "os": "Android",
+            "os_version": "8.1"
         }
     ]
 }
