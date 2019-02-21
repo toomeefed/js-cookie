@@ -17,6 +17,7 @@
     "browserify"
   ],
   "scripts": {
+    "build": "uglify -s src/js.cookie.js -o src/js.cookie.min.js",
     "test": "grunt test"
   },
   "repository": {
@@ -42,6 +43,7 @@
     "grunt-saucelabs": "9.0.0",
     "gzip-js": "0.3.2",
     "qunitjs": "1.23.1",
-    "requirejs": "2.3.5"
+    "requirejs": "2.3.5",
+    "uglify": "^0.1.5"
   }
 }
