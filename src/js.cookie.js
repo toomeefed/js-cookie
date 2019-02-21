@@ -4,6 +4,8 @@
  *
  * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
  * Released under the MIT license
+ *
+ * Modify 52cik 2019-02-21
  */
 ;(function (factory) {
 	var registeredInModuleLoader;
@@ -40,6 +42,37 @@
 		return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
 	}
 
+	function computeExpires(time) {
+		var dt = new Date();
+		var lastChr = time.charAt(time.length - 1);
+		var value = parseInt(time, 10);
+
+		switch (lastChr) {
+			case 'y':
+				dt.setFullYear(dt.getFullYear() + value);
+				break;
+			case 'M':
+				dt.setMonth(dt.getMonth() + value);
+				break;
+			case 'd':
+				dt.setDate(dt.getDate() + value);
+				break;
+			case 'h':
+				dt.setHours(dt.getHours() + value);
+				break;
+			case 'm':
+				dt.setMinutes(dt.getMinutes() + value);
+				break;
+			case 's':
+				dt.setSeconds(dt.getSeconds() + value);
+				break;
+			default:
+				dt = new Date(time);
+		}
+
+		return dt.toUTCString();
+	}
+
 	function init (converter) {
 		function api() {}
 
@@ -52,12 +85,13 @@
 				path: '/'
 			}, api.defaults, attributes);
 
-			if (typeof attributes.expires === 'number') {
-				attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
-			}
+			// if (typeof attributes.expires === 'number') {
+			// 	attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
+      // }
 
-			// We're using "expires" because "max-age" is not supported by IE
-			attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+			var expires = attributes.expires;
+		  // We're using "expires" because "max-age" is not supported by IE
+			attributes.expires = expires ? computeExpires(expires === -1 ? '-1d' : expires) : '';
 
 			try {
 				var result = JSON.stringify(value);
